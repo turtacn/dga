@@ -23,8 +23,8 @@ import numpy as np
 import tldextract
 import math
 
-DGA_DATA_PATH  = "/Users/turta/tmp/dga/data"
-DGA_MODEL_PATH = "/Users/turta/tmp/dga/models"
+DGA_DATA_PATH  = "./data"
+DGA_MODEL_PATH = "./models"
 
 
 # Version printing is always a good idea
