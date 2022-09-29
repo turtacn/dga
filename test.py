@@ -47,6 +47,7 @@ def evaluate_url(model, url):
 
     # Assemble feature matrix (for just one domain)
     X = [len(domain), entropy(domain), alexa_match, dict_match]
+    X = np.array(X).reshape(1, -1)
     y_pred = model['clf'].predict(X)[0]
     print '%s : %s' % (domain, y_pred)
     return y_pred

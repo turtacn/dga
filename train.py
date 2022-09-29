@@ -341,11 +341,11 @@ def main():
         all_domains['diff'] = all_domains['alexa_grams'] - all_domains['word_grams']
 
         # The table below shows those domain names that are more 'dictionary' and less 'web'
-        print all_domains.sort(['diff'], ascending=True).head(10)
+        print all_domains.sort_values(['diff'], ascending=True).head(10)
 
         # The table below shows those domain names that are more 'web' and less 'dictionary'
         # Good O' web....
-        print all_domains.sort(['diff'], ascending=False).head(50)
+        print all_domains.sort_values(['diff'], ascending=False).head(50)
 
         # Lets look at which Legit domains are scoring low on both alexa and word gram count
         weird_cond = (all_domains['class']=='legit') & (all_domains['word_grams']<3) & (all_domains['alexa_grams']<2)
@@ -382,9 +382,10 @@ def main():
         clf = sklearn.ensemble.RandomForestClassifier(n_estimators=20) # Trees in the forest
 
         # Train on a 80/20 split
-        from sklearn.cross_validation import train_test_split
+        from sklearn.model_selection import train_test_split
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
         clf.fit(X_train, y_train)
+        #X_test = np.array(X_test).reshape(1, -1)
         y_pred = clf.predict(X_test)
 
         # Now plot the results of the holdout set in a confusion matrix
@@ -405,22 +406,23 @@ def main():
             _alexa_match = alexa_counts * alexa_vc.transform([domain]).T  # Woot matrix multiply and transpose Woo Hoo!
             _dict_match = dict_counts * dict_vc.transform([domain]).T
             _X = [len(domain), entropy(domain), _alexa_match, _dict_match]
+            _X = np.array(_X).reshape(1, -1)
             print '%s : %s' % (domain, clf.predict(_X)[0])
 
 
         # Examples (feel free to change these and see the results!)
-        test_it('google')
-        test_it('google88')
-        test_it('facebook')
-        test_it('1cb8a5f36f')
-        test_it('pterodactylfarts')
-        test_it('ptes9dro-dwacty2lfa5rrts')
-        test_it('beyonce')
-        test_it('bey666on4ce')
-        test_it('supersexy')
-        test_it('yourmomissohotinthesummertime')
-        test_it('35-sdf-09jq43r')
-        test_it('clicksecurity')
+        #test_it('google')
+        #test_it('google88')
+        #test_it('facebook')
+        #test_it('1cb8a5f36f')
+        #test_it('pterodactylfarts')
+        #test_it('ptes9dro-dwacty2lfa5rrts')
+        #test_it('beyonce')
+        #test_it('bey666on4ce')
+        #test_it('supersexy')
+        #test_it('yourmomissohotinthesummertime')
+        #test_it('35-sdf-09jq43r')
+        #test_it('clicksecurity')
 
 
         # Serialize model to disk
